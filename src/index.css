@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-paper-bg text-paper-ink font-body antialiased;
+    @apply dark:bg-night-bg dark:text-night-ink;
+    font-optical-sizing: auto;
+  }
+
+  /* Tabular, lining numerals so the ranked table columns align. */
+  .nums {
+    font-feature-settings: "tnum" 1, "lnum" 1;
+  }
+
+  /* Respect users who ask for less motion. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* A visible focus ring for keyboard users on every interactive control. */
+  .focusable {
+    @apply outline-none focus-visible:ring-2 focus-visible:ring-paper-accent
+      focus-visible:ring-offset-2 focus-visible:ring-offset-paper-bg
+      dark:focus-visible:ring-night-accent dark:focus-visible:ring-offset-night-bg;
+  }
+}
