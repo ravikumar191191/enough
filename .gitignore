@@ -11,3 +11,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 _legacy
+
+# local tooling (GitHub CLI binary)
+.tools
