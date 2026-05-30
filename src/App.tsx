@@ -16,16 +16,17 @@ export default function App() {
   const [inputs, patch, reset] = useUrlState();
   const [theme, toggleTheme] = useTheme();
 
-  // Did this visit arrive from a shared link? Capture before useUrlState strips
-  // the ref marker from the URL, then record it once.
-  const [fromShare] = useState(
-    () =>
-      typeof window !== "undefined" &&
-      new URLSearchParams(window.location.search).get("ref") === "share"
-  );
+  // Did this visit arrive from a shared link? Capture (with any A/B variant) before
+  // useUrlState strips the markers from the URL, then record it once. The `variant`
+  // property lets the analytics dashboard break down clicks per shared-card variant.
+  const [shareArrival] = useState<string | null>(() => {
+    if (typeof window === "undefined") return null;
+    const p = new URLSearchParams(window.location.search);
+    return p.get("ref") === "share" ? p.get("v") || "default" : null;
+  });
   useEffect(() => {
-    if (fromShare) track("arrived_from_share");
-  }, [fromShare]);
+    if (shareArrival) track("arrived_from_share", { variant: shareArrival });
+  }, [shareArrival]);
 
   // Re-rank every city on any input change. Pure + tiny → well under one frame.
   const ranked = useMemo(() => rankCities(inputs), [inputs]);

@@ -30,13 +30,16 @@ export default function handler(req: Request) {
   const line =
     p.get("line") || "How much you need to stop working - India and US, ranked.";
   const to = p.get("to") || ""; // the app's input query, e.g. "?t=rent&l=luxury"
+  const variant = p.get("v") || ""; // A/B variant marker, propagated to analytics
 
   const ogImage =
     `${origin}/api/og?city=${encodeURIComponent(city)}` +
     `&amount=${encodeURIComponent(amount)}&line=${encodeURIComponent(line)}`;
 
   const search = to.startsWith("?") ? to : to ? `?${to}` : "";
-  const appUrl = `${origin}/${search}${search ? "&" : "?"}ref=share`;
+  const appUrl =
+    `${origin}/${search}${search ? "&" : "?"}ref=share` +
+    (variant ? `&v=${encodeURIComponent(variant)}` : "");
 
   // Title tuned to ~50–60 chars with a value hook + question (better click-through).
   const title = amount
