@@ -145,6 +145,10 @@ export function Controls({
               </>
             }
           />
+          <p className="-mt-1 text-[12px] text-paper-muted dark:text-night-muted sm:col-span-2">
+            Keep both: the India tier is used for Indian cities and the US tier for US
+            cities, since the table ranks them together.
+          </p>
         </div>
       )}
 
@@ -268,7 +272,7 @@ export function Controls({
       </div>
 
       <LabeledSlider
-        label="One-time setup"
+        label="One-time move-in costs"
         min={0}
         max={200_000}
         step={5_000}
@@ -284,8 +288,9 @@ export function Controls({
         )}
         info={
           <>
-            Furniture, vehicles, moving, deposits — a one-time cost added to your
-            upfront number. ₹/$ converted at {FX}/$.
+            A single up-front cost for getting settled — furniture, a car, deposits, the
+            move itself. You set the amount; it's added to your upfront total (not a
+            recurring cost). ₹/$ converted at {FX}/$.
           </>
         }
       />

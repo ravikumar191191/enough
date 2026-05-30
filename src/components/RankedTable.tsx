@@ -27,8 +27,8 @@ function FlagChip({ flag }: { flag: Flag }) {
 
 function fundedLabel(r: CityResult): string {
   if (r.yearsToFund === 0) return "Funded";
-  if (!Number.isFinite(r.yearsToFund)) return "—";
-  return `≈${r.yearsToFund}y → ${r.fundedByAge}`;
+  if (!Number.isFinite(r.yearsToFund)) return "out of reach";
+  return `~${r.yearsToFund}y to age ${r.fundedByAge}`;
 }
 
 function Row({ r, rank }: { r: CityResult; rank: number }) {
@@ -84,25 +84,26 @@ function Row({ r, rank }: { r: CityResult; rank: number }) {
         </div>
       </div>
 
-      {/* Funding bar + breakdown */}
+      {/* Funding read-out + breakdown */}
       <div className="mt-3 pl-7">
-        <div className="flex items-center gap-3">
-          <div
-            className="h-1.5 flex-1 overflow-hidden rounded-full bg-paper-border dark:bg-night-border"
-            role="progressbar"
-            aria-valuenow={funded}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-label={`${r.city.name} funded`}
-          >
-            <div
-              className="h-full rounded-full bg-paper-accent dark:bg-night-accent"
-              style={{ width: `${funded}%` }}
-            />
-          </div>
-          <span className="nums w-28 shrink-0 text-right text-[12px] text-paper-muted dark:text-night-muted">
+        <div className="mb-1 flex items-center justify-between text-[11px] uppercase tracking-wide text-paper-muted dark:text-night-muted">
+          <span>Funded today</span>
+          <span className="nums normal-case tracking-normal">
             {funded}% · {fundedLabel(r)}
           </span>
+        </div>
+        <div
+          className="h-1.5 w-full overflow-hidden rounded-full bg-paper-border dark:bg-night-border"
+          role="progressbar"
+          aria-valuenow={funded}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={`${r.city.name} funded today`}
+        >
+          <div
+            className="h-full rounded-full bg-paper-accent dark:bg-night-accent"
+            style={{ width: `${funded}%` }}
+          />
         </div>
 
         <div className="mt-2 flex flex-wrap gap-x-4 gap-y-0.5 text-[12px] text-paper-muted dark:text-night-muted">

@@ -1,7 +1,7 @@
 {
   "name": "enough",
   "private": true,
-  "version": "0.6.0",
+  "version": "0.7.0",
   "type": "module",
   "description": "Your cross-border 'enough number' — India and US cities ranked side by side.",
   "license": "MIT",

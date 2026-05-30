@@ -55,12 +55,17 @@ export function Header({
 
   return (
     <header className="flex items-start justify-between gap-3 px-4 pt-5 sm:px-6">
-      <div>
+      <div className="min-w-0">
         <h1 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
           Enough <span className="text-paper-accent dark:text-night-accent">≈</span>
         </h1>
-        <p className="mt-0.5 max-w-md text-[13px] text-paper-muted dark:text-night-muted">
-          Your cross-border "enough" number — India and the US, ranked in one list.
+        <p className="mt-1 max-w-lg font-body text-[15px] leading-snug sm:text-base">
+          How much do you need to <strong>stop working</strong> — in every city you'd
+          actually live in?
+        </p>
+        <p className="mt-1 max-w-lg text-[12.5px] text-paper-muted dark:text-night-muted">
+          Set your situation, and we rank India &amp; US cities by your "enough" number —
+          and show how close you are today.
         </p>
       </div>
 
