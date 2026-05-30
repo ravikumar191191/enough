@@ -1,9 +1,9 @@
 {
-  "name": "enough",
+  "name": "firenough",
   "private": true,
-  "version": "0.12.3",
+  "version": "0.13.0",
   "type": "module",
-  "description": "Your cross-border 'enough number' — India and US cities ranked side by side.",
+  "description": "FIREnough — find your freedom number: India and US cities ranked by how much you need so money's never the reason you work.",
   "license": "Apache-2.0",
   "scripts": {
     "dev": "vite",

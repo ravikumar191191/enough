@@ -1,11 +1,11 @@
-# Enough ≈
+# FIREnough — find your freedom number
 
-**Your cross-border "enough" number — India and the US, ranked side by side in one list.**
+**How much you need so money's never the reason you work — India and US cities ranked side by side, in one list.**
 
 A one-screen calculator for a globally mobile family weighing three doors: stay in
 your high-cost US metro, move to a cheaper or no-tax US metro, or return to India.
 It answers a single question: *given what we have and how we want to live, where can
-we afford to stop working — and how far away is each option?*
+we afford to make work optional — and how far away is each option?*
 
 Existing tools don't help. Return-to-India sites do logistics checklists; FIRE blogs
 do US-only math; everyone else falls back on stale spreadsheets. **The gap is a

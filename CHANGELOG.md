@@ -1,5 +1,12 @@
 # What's changed
 
+## v0.13 — Now called FIREnough
+
+- **New name: FIREnough** — and a warmer promise. Instead of "how much to *stop working*"
+  (which sounds like quitting), it's now *"find your **freedom number**: how much you need
+  so money's never the reason you work."* Same tool, friendlier framing — your number is
+  about *options*, not idleness.
+
 Plain-language notes on what's new in Enough, newest first. (Built rapidly in one
 session, so the dates cluster — the version numbers show the order things shipped.)
 
