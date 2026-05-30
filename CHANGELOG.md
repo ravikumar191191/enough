@@ -3,6 +3,15 @@
 Plain-language notes on what's new in Enough, newest first. (Built rapidly in one
 session, so the dates cluster — the version numbers show the order things shipped.)
 
+## v0.11 — See what moving actually saves you
+
+- **The stay-or-go comparison.** Tell us where you live now ("Where are you now?") and
+  every city shows what it would *free up* and how many years *sooner* you could stop
+  working — e.g. *"vs San Francisco: $6.2M less, 23 years sooner."* The cheapest path
+  isn't an abstract number anymore; it's a decision.
+- **Punchier share previews** — the preview card now has a clear call-to-action and a
+  fuller title.
+
 ## v0.10 — Shareable, with a real preview card
 
 - **Rich share previews.** Share your scenario and the link now unfurls into a clean

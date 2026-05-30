@@ -59,9 +59,10 @@ export interface Inputs {
   swrPct: number;
   setupUsd: number; // one-time setup, USD (converted to ₹ for India)
 
-  // View state — persisted in the URL, but NOT used by the model.
+  // View state — persisted in the URL, but NOT used by computeCity.
   advanced: boolean; // false = Quick mode (essentials only); true = all controls
   filter: "both" | "india" | "us"; // which cities the ranked list shows
+  currentCity: string; // city id you live in now (baseline for the stay-or-go delta), or "none"
 }
 
 export const DEFAULT_INPUTS: Inputs = {
@@ -83,6 +84,7 @@ export const DEFAULT_INPUTS: Inputs = {
   setupUsd: 50_000,
   advanced: false,
   filter: "both",
+  currentCity: "SF", // default to a high-cost US metro so the delta is relevant on first load
 };
 
 // ─────────────────────────────────────────────────────────────────────────────

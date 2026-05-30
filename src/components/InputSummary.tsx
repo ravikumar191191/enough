@@ -64,8 +64,25 @@ function whySentence(r: CityResult, inp: Inputs): string {
   return `That's a ${corpus} invested nest egg to cover about ${spend}/yr of living costs (rent included), plus ${upfront} to get set up.`;
 }
 
-export function InputSummary({ inputs, lowest }: { inputs: Inputs; lowest: CityResult }) {
+export function InputSummary({
+  inputs,
+  lowest,
+  baseline,
+}: {
+  inputs: Inputs;
+  lowest: CityResult;
+  baseline: CityResult | null;
+}) {
   const funded = Math.min(100, Math.round(lowest.fundedPct));
+
+  // Stay-or-go delta vs the user's current city.
+  const showDelta = baseline && baseline.city.id !== lowest.city.id;
+  const cheaper = baseline ? lowest.totalUsd <= baseline.totalUsd : true;
+  const dollarAbs = baseline ? Math.abs(baseline.totalUsd - lowest.totalUsd) : 0;
+  const bothFinite =
+    baseline && Number.isFinite(lowest.yearsToFund) && Number.isFinite(baseline.yearsToFund);
+  const yearsAbs = baseline ? Math.abs(baseline.yearsToFund - lowest.yearsToFund) : 0;
+  const sooner = baseline ? baseline.yearsToFund - lowest.yearsToFund > 0 : false;
 
   return (
     <section
@@ -91,6 +108,27 @@ export function InputSummary({ inputs, lowest }: { inputs: Inputs; lowest: CityR
           — <strong>{funded}%</strong> funded today{fundingClause(lowest)}.{" "}
           {whySentence(lowest, inputs)}
         </p>
+        {showDelta && baseline && (
+          <p className="mt-3 font-body text-[15px] leading-relaxed sm:text-base">
+            Compared with <strong>{baseline.city.name}</strong> (
+            <strong className="nums">{usdFull(baseline.totalUsd)}</strong>), that's about{" "}
+            <strong
+              className={`nums ${cheaper ? "text-emerald-700 dark:text-emerald-400" : "text-amber-700 dark:text-amber-400"}`}
+            >
+              {usdCompact(dollarAbs)} {cheaper ? "less" : "more"}
+            </strong>
+            {bothFinite && yearsAbs !== 0 && (
+              <>
+                {" "}
+                and{" "}
+                <strong className="nums">
+                  ~{yearsAbs} years {sooner ? "sooner" : "later"}
+                </strong>
+              </>
+            )}
+            .
+          </p>
+        )}
         <p className="mt-3 border-t border-paper-border pt-2 text-[11.5px] leading-snug text-paper-muted dark:border-night-border dark:text-night-muted">
           Directional, not advice: figures use asking-side prices (deals often close
           15–20% lower) and simplified effective taxes. Tune the assumptions below.
