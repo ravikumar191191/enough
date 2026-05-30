@@ -61,6 +61,39 @@ and "freedom number" / "work-optional" are aging better with a general audience.
 brief asks for maximum signal to the FIRE crowd, and **FIREnough** delivers that while the
 "fair enough" read and the tagline keep it accessible.
 
+## Deciding between finalists: FIREnough vs. Freedom Number
+
+First principle: **this is a two-way door** (reversible — no users, no equity in the name
+yet). The cost of dithering exceeds the cost of being slightly wrong. So: use a scorecard,
+decide, ship, and let real signal trigger a rebrand only if it ever does.
+
+Score on the criteria that matter *at the wedge stage* (signal to the beachhead +
+ownability weigh most):
+
+| Criterion | FIREnough | Freedom Number |
+|---|---|---|
+| Signal to the wedge (FIRE-aware) | ★★★ | ★★ |
+| Distinctiveness / memorability | ★★★ (coined; "fair enough" pun) | ★ (common phrase) |
+| **Ownability** — domain / SEO / trademark | ★★★ (coined mark) | ★ (generic, crowded) |
+| Breadth / future TAM | ★★ | ★★★ |
+| Ages well | ★★ ("FIRE" may date) | ★★★ (timeless) |
+| Clarity standalone (no tagline) | ★★ | ★★★ |
+
+**The decisive criterion is ownability.** "Freedom Number" is a generic phrase lots of
+people already use — you can't realistically own the domain, can't rank in a saturated
+search term, and can't cleanly trademark a descriptive phrase. "FIREnough" is a *coined
+word*: ownable domain, clean SEO, registrable mark. For something you want to **own**, that
+breaks the tie.
+
+**Recommendation: name it `FIREnough`, and put "your freedom number" in the tagline/copy.**
+That captures the ownable, distinctive brand *and* the warm mainstream concept — best of
+both. Revisit only if real signal says the FIRE coding is hurting reach.
+
+**If you want data to decide:** it's cheaply testable. Generate the OG card under each name,
+drop both into 2–3 target communities (or message 5–10 target users "which would you
+click?"), and compare reactions / click-through. We already have the OG-card machinery to
+make both variants in minutes.
+
 ## If we pick a new name, what changes (one shippable pass)
 
 - App header title + tagline ([`Header.tsx`](../src/components/Header.tsx)).
