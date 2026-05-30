@@ -76,8 +76,11 @@ From the persona evaluation ([docs/evaluations](docs/evaluations/2026-05-30-v0.7
 
 ## Done
 
-- **v0.8 (partial) · F1 per-geography salary, F2 asking-price caveat near the answer**
-  _(2026-05-30)_ — on develop preview.
+- **v0.9 · U1 Quick/Advanced mode, U2 India/US/Both filter, U5 editable number inputs**
+  _(2026-05-30)_ — shipped to production. Plus **San Diego** added (first sourced
+  city from the breadth backlog).
+- **v0.8 · F1 per-geography salary, F2 asking-price caveat, F3 per-row "show the math"**
+  _(2026-05-30)_ — shipped to production.
 - **v0.7 · C1–C5, C3a — comprehension pass** _(2026-05-30)_ — product explainer, headline
   ⓘ explainers, school note, "move-in costs" label, "Funded today"-labeled bars. On
   develop preview (PR awaiting review → merge to production).

@@ -16,8 +16,8 @@ that's the whole product here.
 > cross-currency comparison is directional (not lifestyle-identical), and tax is
 > simplified to effective rates. See [Caveats](#caveats).
 
-**[▶ Live demo](https://enough-wheat.vercel.app/)** &nbsp;·&nbsp; Alpha/staging: every
-`develop` push & PR gets its own Vercel preview URL.
+**[▶ Live demo](https://enough-wheat.vercel.app/)** &nbsp;·&nbsp; [What's changed](CHANGELOG.md)
+&nbsp;·&nbsp; Staging: every `develop` push & PR gets its own Vercel preview URL.
 
 <!-- Add screenshots here, e.g.:
 ![Light theme](docs/light.png)
@@ -28,20 +28,19 @@ that's the whole product here.
 
 ## What it does
 
-- **One unified ranked table.** India and US cities live in the *same* list,
-  everything converted to USD (with ₹ shown for India), so the stay-or-go comparison
-  is one glance. Lowest option is tagged; air-quality and no-income-tax flags show
-  inline.
-- **Live everything.** Adjust home type, segment, lifestyle, kids, who works, net
-  worth, withdrawal rate, and age — the table re-ranks instantly.
-- **A headline that's always reachable.** The lowest "enough", your funding %, and
-  years-to-fund stay pinned to the top as you scroll.
-- **Shareable by link.** Every input is encoded in the URL — copy it into a WhatsApp
-  group and the recipient sees your exact scenario. No login, no backend, no storage.
-- **Teachable.** Every control has a tappable ⓘ explaining what it means and what it
-  assumes.
-- **Day/Night.** Warm editorial "paper" light theme and a high-contrast dark theme,
-  auto-detecting your OS.
+- **One unified ranked table.** India and US cities sit in the *same* list, all in USD
+  (with ₹ for India), so stay-or-go is one glance. Lowest is tagged; air-quality and
+  no-income-tax flags show inline. **Filter** to India, US, or both.
+- **Quick or Advanced.** Start with the essentials; switch to Advanced to tune segment,
+  real return, withdrawal rate, age, and move-in costs.
+- **Realistic income.** Separate salaries for India (₹) and the US ($), since the same
+  person usually earns differently in each country.
+- **Show the math.** Every city expands to the full derivation — spending, nest egg,
+  upfront — so no number is a black box.
+- **Live & shareable.** Change anything and the table re-ranks instantly. Every input is
+  in the URL, so a copied link reproduces your exact scenario. No login, no backend.
+- **Teachable & accessible.** A tappable ⓘ on every control; warm "paper" light theme and
+  a high-contrast dark theme; keyboard-operable; works one-handed on a phone.
 
 ## The model
 
