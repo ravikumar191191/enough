@@ -3,6 +3,11 @@
 Plain-language notes on what's new in Enough, newest first. (Built rapidly in one
 session, so the dates cluster — the version numbers show the order things shipped.)
 
+## v0.12.1 — Polish
+
+- Money fields (net worth, salary, move-in) now show **formatted currency** while you read
+  them — `$1,000,000`, `₹50 L` — and switch to plain digits only while you're typing.
+
 ## v0.12 — An honest range, not just a number
 
 - **Sensitivity band.** The headline now shows a range next to the single number (e.g.
