@@ -57,10 +57,10 @@ export default function App() {
     const funded = Math.min(100, Math.round(lowest.fundedPct));
     const line =
       lowest.yearsToFund === 0
-        ? `${funded}% funded today - already enough`
+        ? `${funded}% funded today - already free`
         : !Number.isFinite(lowest.yearsToFund)
           ? `${funded}% funded today`
-          : `${funded}% funded today - enough by age ${lowest.fundedByAge}`;
+          : `${funded}% funded today - free by age ${lowest.fundedByAge}`;
     return { city: lowest.city.name, amount: usdFull(lowest.totalUsd), line };
   }, [lowest]);
 

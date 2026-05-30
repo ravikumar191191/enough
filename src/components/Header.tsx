@@ -74,15 +74,15 @@ export function Header({
     <header className="flex items-start justify-between gap-3 px-4 pt-5 sm:px-6">
       <div className="min-w-0">
         <h1 className="font-display text-2xl font-bold tracking-tight sm:text-3xl">
-          Enough <span className="text-paper-accent dark:text-night-accent">≈</span>
+          <span className="text-paper-accent dark:text-night-accent">FIRE</span>nough
         </h1>
         <p className="mt-1 max-w-lg font-body text-[15px] leading-snug sm:text-base">
-          How much do you need to <strong>stop working</strong> — in every city you'd
-          actually live in?
+          How much do you need so money's <strong>never the reason you work</strong> — in
+          every city you'd actually live in?
         </p>
         <p className="mt-1 max-w-lg text-[12.5px] text-paper-muted dark:text-night-muted">
-          Set your situation, and we rank India &amp; US cities by your "enough" number —
-          and show how close you are today.
+          Find your <strong>freedom number</strong>: we rank India &amp; US cities by what
+          it'd take — and show how close you are today.
         </p>
       </div>
 

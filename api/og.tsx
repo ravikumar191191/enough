@@ -41,7 +41,7 @@ export default function handler(req: Request) {
             color: "#6f685b",
           }}
         >
-          ENOUGH / YOUR CROSS-BORDER "ENOUGH" NUMBER
+          FIRENOUGH / YOUR FREEDOM NUMBER
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" }}>
@@ -65,7 +65,7 @@ export default function handler(req: Request) {
 
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
           <div style={{ display: "flex", fontSize: 36, color: "#9a3412", fontWeight: 600 }}>
-            Find your number, free, at {host}
+            Find your freedom number, free, at {host}
           </div>
           <div style={{ display: "flex", fontSize: 22, color: "#6f685b" }}>
             India and US cities ranked   -   not financial advice

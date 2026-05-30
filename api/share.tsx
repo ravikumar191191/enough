@@ -40,9 +40,9 @@ export default function handler(req: Request) {
 
   // Title tuned to ~50–60 chars with a value hook + question (better click-through).
   const title = amount
-    ? `${city}: ${amount} to stop working — what's your number?`
-    : "Enough — where can you afford to stop working? India vs US";
-  const description = `${line} — compare India & US cities and find your own "enough" number, free.`;
+    ? `${city}: ${amount} freedom number — what's yours?`
+    : "FIREnough — find your freedom number (India vs US)";
+  const description = `${line} — compare India & US cities and find your own freedom number, free.`;
 
   const html = `<!doctype html>
 <html lang="en">
