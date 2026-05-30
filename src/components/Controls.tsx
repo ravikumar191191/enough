@@ -145,6 +145,10 @@ export function Controls({
               </>
             }
           />
+          <p className="-mt-1 text-[12px] text-paper-muted dark:text-night-muted sm:col-span-2">
+            Keep both: the India tier is used for Indian cities and the US tier for US
+            cities, since the table ranks them together.
+          </p>
         </div>
       )}
 
@@ -167,30 +171,43 @@ export function Controls({
       />
 
       {inputs.workers > 0 && (
-        <LabeledSlider
-          label="Salary per earner (gross)"
-          min={0}
-          max={1_000_000}
-          step={10_000}
-          value={inputs.salaryUsdPerEarner}
-          onChange={(v) => patch({ salaryUsdPerEarner: v })}
-          format={(v) => (
-            <span>
-              {usdCompact(v)}{" "}
-              <span className="text-paper-muted dark:text-night-muted">
-                · {inrCompact(v * FX)}
-              </span>
-            </span>
-          )}
-          info={
-            <>
-              Gross salary <i>per earner</i>, in USD. For India cities it's converted
-              to ₹ at {FX}/$ and taxed under the new regime; for US cities, federal +
-              state. One figure across geographies is a simplification — earning power
-              really differs by location.
-            </>
-          }
-        />
+        <div className="flex flex-col gap-5">
+          <LabeledSlider
+            label="Salary per earner · US"
+            min={0}
+            max={1_000_000}
+            step={10_000}
+            value={inputs.salaryUsdPerEarner}
+            onChange={(v) => patch({ salaryUsdPerEarner: v })}
+            format={(v) => usdCompact(v)}
+            info={
+              <>
+                Gross $/earner if you're working in a <b>US</b> city. Taxed federal +
+                state where you live.
+              </>
+            }
+          />
+          <LabeledSlider
+            label="Salary per earner · India"
+            min={0}
+            max={50_000_000}
+            step={500_000}
+            value={inputs.salaryInrPerEarner}
+            onChange={(v) => patch({ salaryInrPerEarner: v })}
+            format={(v) => inrCompact(v)}
+            info={
+              <>
+                Gross ₹/earner if you're working in an <b>India</b> city. Taxed under the
+                new regime. Kept separate from the US figure on purpose — earning power
+                really differs by country, so the same person usually earns a different
+                amount in each.
+              </>
+            }
+          />
+          <p className="-mt-1 text-[12px] text-paper-muted dark:text-night-muted">
+            Each salary applies only to its own country's cities.
+          </p>
+        </div>
       )}
 
       <LabeledSlider
@@ -268,7 +285,7 @@ export function Controls({
       </div>
 
       <LabeledSlider
-        label="One-time setup"
+        label="One-time move-in costs"
         min={0}
         max={200_000}
         step={5_000}
@@ -284,8 +301,9 @@ export function Controls({
         )}
         info={
           <>
-            Furniture, vehicles, moving, deposits — a one-time cost added to your
-            upfront number. ₹/$ converted at {FX}/$.
+            A single up-front cost for getting settled — furniture, a car, deposits, the
+            move itself. You set the amount; it's added to your upfront total (not a
+            recurring cost). ₹/$ converted at {FX}/$.
           </>
         }
       />

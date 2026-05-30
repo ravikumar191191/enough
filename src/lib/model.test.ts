@@ -96,6 +96,24 @@ describe("ranking", () => {
     });
     expect(both.corpusUsd).toBeLessThan(none.corpusUsd);
   });
+
+  it("salary is applied per geography (₹ for India, $ for US)", () => {
+    const base: Inputs = { ...DEFAULT_INPUTS, workers: 1 };
+    // Raising the US salary changes a US city but not an India city.
+    expect(computeCity(us, { ...base, salaryUsdPerEarner: 400_000 }).netIncomeUsd).toBeGreaterThan(
+      computeCity(us, { ...base, salaryUsdPerEarner: 100_000 }).netIncomeUsd
+    );
+    expect(computeCity(india, { ...base, salaryUsdPerEarner: 400_000 }).netIncomeUsd).toBe(
+      computeCity(india, { ...base, salaryUsdPerEarner: 100_000 }).netIncomeUsd
+    );
+    // Raising the India salary changes an India city but not a US city.
+    expect(computeCity(india, { ...base, salaryInrPerEarner: 20_000_000 }).netIncomeUsd).toBeGreaterThan(
+      computeCity(india, { ...base, salaryInrPerEarner: 4_000_000 }).netIncomeUsd
+    );
+    expect(computeCity(us, { ...base, salaryInrPerEarner: 20_000_000 }).netIncomeUsd).toBe(
+      computeCity(us, { ...base, salaryInrPerEarner: 4_000_000 }).netIncomeUsd
+    );
+  });
 });
 
 describe("url state round-trips", () => {
@@ -106,6 +124,8 @@ describe("url state round-trips", () => {
       kids: 2,
       workers: 2,
       segment: "luxury",
+      salaryUsdPerEarner: 250_000,
+      salaryInrPerEarner: 7_500_000,
       netWorthUsd: 3_250_000,
       swrPct: 2.8,
       currentAge: 41,

@@ -5,6 +5,7 @@
 import { Check, TrendingUp } from "lucide-react";
 import { usdFull } from "../lib/format";
 import type { CityResult } from "../lib/model";
+import { InfoTag } from "./ui";
 
 export function Headline({ lowest }: { lowest: CityResult }) {
   const funded = Math.min(100, Math.round(lowest.fundedPct));
@@ -34,6 +35,11 @@ export function Headline({ lowest }: { lowest: CityResult }) {
         <span className="inline-flex items-center gap-1.5">
           <span className="nums font-semibold">{funded}%</span>
           <span className="text-paper-muted dark:text-night-muted">funded today</span>
+          <InfoTag label="Funded today">
+            Your <b>net worth today</b> divided by the total this city needs.{" "}
+            <b>100%</b> means you could stop working right now; lower means there's a gap
+            still to fill.
+          </InfoTag>
         </span>
 
         <span className="inline-flex items-center gap-1.5">
@@ -65,6 +71,11 @@ export function Headline({ lowest }: { lowest: CityResult }) {
                   </span>
                 )}
               </span>
+              <InfoTag label="Years to fund">
+                How long until your net worth grows into the target — compounding at your{" "}
+                <b>real return</b>, plus any savings if you're still working. "Funded by
+                age" is simply your current age plus those years.
+              </InfoTag>
             </>
           )}
         </span>

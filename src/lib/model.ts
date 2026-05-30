@@ -50,7 +50,8 @@ export interface Inputs {
   indiaSchool: IndiaSchool;
   usSchool: USSchool;
   workers: Workers;
-  salaryUsdPerEarner: number; // gross, USD (converted to ₹ for India tax)
+  salaryUsdPerEarner: number; // gross $/earner, applied to US cities
+  salaryInrPerEarner: number; // gross ₹/earner, applied to India cities
   netWorthUsd: number;
   realReturnPct: number;
   currentAge: number;
@@ -69,6 +70,7 @@ export const DEFAULT_INPUTS: Inputs = {
   usSchool: "public",
   workers: 0,
   salaryUsdPerEarner: 150_000,
+  salaryInrPerEarner: 6_000_000, // ₹60L — a senior India tech salary
   netWorthUsd: 1_000_000,
   realReturnPct: 7,
   currentAge: 34,
@@ -81,10 +83,22 @@ export const DEFAULT_INPUTS: Inputs = {
 // A computed result per city. All headline figures in USD; India keeps an ₹ echo.
 // ─────────────────────────────────────────────────────────────────────────────
 
+/** Line items behind a city's total, all in USD — powers the "show the math" view. */
+export interface CityBreakdown {
+  baseLifestyleUsd: number;
+  schoolUsd: number;
+  healthcareUsd: number; // US only (0 for India)
+  propertyTaxUsd: number; // US only, buying (0 otherwise)
+  rentUsd: number; // renting only (0 when buying)
+  transactionCostUsd: number; // stamp duty (India) / closing (US), buying only
+  setupUsd: number;
+}
+
 export interface CityResult {
   city: CityData;
   homeUsd: number; // purchase price included in upfront (0 when renting)
   homeValueUsd: number; // notional home value (drives rent & property tax)
+  breakdown: CityBreakdown;
   annualSpendUsd: number;
   netIncomeUsd: number;
   uncoveredUsd: number;
@@ -181,39 +195,46 @@ export function computeCity(city: CityData, inp: Inputs): CityResult {
   let bufferLocal: number;
   let toUsd: number; // divide local by this to get USD
 
+  // Line items (local currency) captured for the "show the math" breakdown.
+  let baseLocal: number;
+  let schoolLocal: number;
+  let healthcareLocal = 0;
+  let propTaxLocal = 0;
+  let rentLocal = 0;
+  let txnLocal = 0;
+  let setupLocal: number;
+
   if (city.geography === "india") {
     toUsd = FX;
     const sqft = HOME_SIZE_SQFT[inp.homeType];
     homeValueLocal = sqft * city.rateCard[inp.segment]; // ₹
 
-    const baseInr = city.baseLifestyleLakh * 1e5 * lifeMult;
-    const schoolInr = inp.kids * INDIA_SCHOOL_LAKH[inp.indiaSchool] * 1e5;
-    const rentInr = buying ? 0 : homeValueLocal * (RENT_YIELD.india / 100);
-    annualSpendLocal = baseInr + schoolInr + rentInr;
+    baseLocal = city.baseLifestyleLakh * 1e5 * lifeMult;
+    schoolLocal = inp.kids * INDIA_SCHOOL_LAKH[inp.indiaSchool] * 1e5;
+    rentLocal = buying ? 0 : homeValueLocal * (RENT_YIELD.india / 100);
+    annualSpendLocal = baseLocal + schoolLocal + rentLocal;
 
-    const setupInr = inp.setupUsd * FX;
-    upfrontLocal = buying
-      ? homeValueLocal + homeValueLocal * (city.stampDutyPct / 100) + setupInr
-      : setupInr;
+    setupLocal = inp.setupUsd * FX;
+    txnLocal = buying ? homeValueLocal * (city.stampDutyPct / 100) : 0;
+    upfrontLocal = buying ? homeValueLocal + txnLocal + setupLocal : setupLocal;
 
-    const grossPerEarnerInr = inp.salaryUsdPerEarner * FX;
-    netIncomeLocal = inp.workers * afterTaxIndia(grossPerEarnerInr);
+    netIncomeLocal = inp.workers * afterTaxIndia(inp.salaryInrPerEarner);
     bufferLocal = BUFFER_LOCAL.india;
   } else {
     toUsd = 1;
     homeValueLocal =
       city.homeAnchorUsd * US_SEGMENT_SCALE[inp.segment] * homeTypeFactor(inp.homeType);
 
-    const baseUsd = city.baseLifestyleUsd * lifeMult;
-    const schoolUsd = inp.kids * US_SCHOOL_USD[inp.usSchool];
-    const healthcareUsd = US_HEALTHCARE_USD; // family, recurring
-    const propTaxUsd = buying ? homeValueLocal * (city.propertyTaxPct / 100) : 0;
-    const rentUsd = buying ? 0 : homeValueLocal * (RENT_YIELD.us / 100);
-    annualSpendLocal = baseUsd + schoolUsd + healthcareUsd + propTaxUsd + rentUsd;
+    baseLocal = city.baseLifestyleUsd * lifeMult;
+    schoolLocal = inp.kids * US_SCHOOL_USD[inp.usSchool];
+    healthcareLocal = US_HEALTHCARE_USD; // family, recurring
+    propTaxLocal = buying ? homeValueLocal * (city.propertyTaxPct / 100) : 0;
+    rentLocal = buying ? 0 : homeValueLocal * (RENT_YIELD.us / 100);
+    annualSpendLocal = baseLocal + schoolLocal + healthcareLocal + propTaxLocal + rentLocal;
 
-    upfrontLocal = buying
-      ? homeValueLocal + homeValueLocal * (US_CLOSING_COST_PCT / 100) + inp.setupUsd
-      : inp.setupUsd;
+    setupLocal = inp.setupUsd;
+    txnLocal = buying ? homeValueLocal * (US_CLOSING_COST_PCT / 100) : 0;
+    upfrontLocal = buying ? homeValueLocal + txnLocal + setupLocal : setupLocal;
 
     netIncomeLocal = inp.workers * afterTaxUS(inp.salaryUsdPerEarner, city.stateTaxRatePct);
     bufferLocal = BUFFER_LOCAL.us;
@@ -243,6 +264,15 @@ export function computeCity(city: CityData, inp: Inputs): CityResult {
     city,
     homeUsd,
     homeValueUsd,
+    breakdown: {
+      baseLifestyleUsd: baseLocal / toUsd,
+      schoolUsd: schoolLocal / toUsd,
+      healthcareUsd: healthcareLocal / toUsd,
+      propertyTaxUsd: propTaxLocal / toUsd,
+      rentUsd: rentLocal / toUsd,
+      transactionCostUsd: txnLocal / toUsd,
+      setupUsd: setupLocal / toUsd,
+    },
     annualSpendUsd,
     netIncomeUsd,
     uncoveredUsd,
