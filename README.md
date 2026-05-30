@@ -20,7 +20,8 @@ that's the whole product here.
 &nbsp;·&nbsp; Staging: every `develop` push & PR gets its own Vercel preview URL.
 
 **Docs:** [Product brief (3-pager)](docs/PRODUCT.md) · [Build spec (6-pager)](docs/BUILD-SPEC.md)
-· [Backlog](BACKLOG.md) · [Personas](docs/personas.md) · [Evaluation process](docs/evaluation-process.md)
+· [How we evaluate](docs/EVALUATION.md) · [Backlog](BACKLOG.md) · [Personas](docs/personas.md)
+· [Evaluation process](docs/evaluation-process.md)
 
 <!-- Add screenshots here, e.g.:
 ![Light theme](docs/light.png)

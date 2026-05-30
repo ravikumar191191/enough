@@ -143,49 +143,54 @@ export function Segmented<T extends string | number>({
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// NumberField — type an exact value. Local text state; commits (clamped) on blur/Enter.
+// NumberField — type an exact value. Shows a formatted currency string ("$1,000,000")
+// when idle; raw digits while editing. Commits (clamped) on blur/Enter.
 // ─────────────────────────────────────────────────────────────────────────────
 function NumberField({
   value,
   min,
   max,
-  step,
   onCommit,
   ariaLabel,
+  prefix = "$",
+  locale = "en-US",
 }: {
   value: number;
   min: number;
   max: number;
-  step: number;
   onCommit: (v: number) => void;
   ariaLabel: string;
+  prefix?: string;
+  locale?: string;
 }) {
-  const [text, setText] = useState(String(value));
-  // Re-sync when the value changes elsewhere (e.g. the slider moves).
-  useEffect(() => setText(String(value)), [value]);
+  const [focused, setFocused] = useState(false);
+  const [text, setText] = useState("");
+
+  const display = focused ? text : `${prefix}${value.toLocaleString(locale)}`;
 
   const commit = () => {
-    const n = Number(text);
-    const v = Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : value;
+    const n = Number(text.replace(/[^0-9.]/g, ""));
+    const v = text.trim() !== "" && Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : value;
     onCommit(v);
-    setText(String(v));
+    setFocused(false);
   };
 
   return (
     <input
-      type="number"
+      type="text"
       inputMode="numeric"
       aria-label={ariaLabel}
-      value={text}
-      min={min}
-      max={max}
-      step={step}
+      value={display}
+      onFocus={() => {
+        setFocused(true);
+        setText(String(value));
+      }}
       onChange={(e) => setText(e.target.value)}
       onBlur={commit}
       onKeyDown={(e) => {
         if (e.key === "Enter") (e.target as HTMLInputElement).blur();
       }}
-      className="focusable nums w-32 rounded-md border border-paper-border bg-paper-bg px-2 py-1 text-right text-sm font-semibold text-paper-ink dark:border-night-border dark:bg-night-bg dark:text-night-ink"
+      className="focusable nums w-36 rounded-md border border-paper-border bg-paper-bg px-2 py-1 text-right text-sm font-semibold text-paper-ink dark:border-night-border dark:bg-night-bg dark:text-night-ink"
     />
   );
 }
@@ -204,6 +209,8 @@ export function LabeledSlider({
   info,
   infoTitle,
   editable,
+  editPrefix,
+  editLocale,
 }: {
   label: string;
   min: number;
@@ -215,6 +222,8 @@ export function LabeledSlider({
   info?: ReactNode;
   infoTitle?: string;
   editable?: boolean;
+  editPrefix?: string;
+  editLocale?: string;
 }) {
   const id = useId();
   return (
@@ -230,9 +239,10 @@ export function LabeledSlider({
               value={value}
               min={min}
               max={max}
-              step={step}
               onCommit={onChange}
               ariaLabel={label}
+              prefix={editPrefix}
+              locale={editLocale}
             />
           ) : (
             <span className="nums font-display text-base font-semibold text-paper-ink dark:text-night-ink">

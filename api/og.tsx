@@ -11,7 +11,9 @@ import { ImageResponse } from "@vercel/og";
 export const config = { runtime: "edge" };
 
 export default function handler(req: Request) {
-  const p = new URL(req.url).searchParams;
+  const url = new URL(req.url);
+  const p = url.searchParams;
+  const host = url.host; // live domain — never hardcoded, never stale
   const city = p.get("city") || "Your number";
   const amount = p.get("amount") || "";
   const line =
@@ -63,7 +65,7 @@ export default function handler(req: Request) {
 
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
           <div style={{ display: "flex", fontSize: 36, color: "#9a3412", fontWeight: 600 }}>
-            Find your number, free, at enough-wheat.vercel.app
+            Find your number, free, at {host}
           </div>
           <div style={{ display: "flex", fontSize: 22, color: "#6f685b" }}>
             India and US cities ranked   -   not financial advice

@@ -268,6 +268,8 @@ export function Controls({
             onChange={(v) => patch({ salaryInrPerEarner: v })}
             format={(v) => inrCompact(v)}
             editable
+            editPrefix="₹"
+            editLocale="en-IN"
             info={
               <>
                 Gross ₹/earner if you're working in an <b>India</b> city. Taxed under the
