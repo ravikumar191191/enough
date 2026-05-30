@@ -50,7 +50,8 @@ export interface Inputs {
   indiaSchool: IndiaSchool;
   usSchool: USSchool;
   workers: Workers;
-  salaryUsdPerEarner: number; // gross, USD (converted to ₹ for India tax)
+  salaryUsdPerEarner: number; // gross $/earner, applied to US cities
+  salaryInrPerEarner: number; // gross ₹/earner, applied to India cities
   netWorthUsd: number;
   realReturnPct: number;
   currentAge: number;
@@ -69,6 +70,7 @@ export const DEFAULT_INPUTS: Inputs = {
   usSchool: "public",
   workers: 0,
   salaryUsdPerEarner: 150_000,
+  salaryInrPerEarner: 6_000_000, // ₹60L — a senior India tech salary
   netWorthUsd: 1_000_000,
   realReturnPct: 7,
   currentAge: 34,
@@ -196,8 +198,7 @@ export function computeCity(city: CityData, inp: Inputs): CityResult {
       ? homeValueLocal + homeValueLocal * (city.stampDutyPct / 100) + setupInr
       : setupInr;
 
-    const grossPerEarnerInr = inp.salaryUsdPerEarner * FX;
-    netIncomeLocal = inp.workers * afterTaxIndia(grossPerEarnerInr);
+    netIncomeLocal = inp.workers * afterTaxIndia(inp.salaryInrPerEarner);
     bufferLocal = BUFFER_LOCAL.india;
   } else {
     toUsd = 1;

@@ -10,7 +10,7 @@
  * but would require a serverless function to hold the API key.
  */
 import type { HomeType, Lifestyle, Segment } from "../data/assumptions";
-import { usdCompact, usdFull } from "../lib/format";
+import { inrCompact, usdCompact, usdFull } from "../lib/format";
 import type { CityResult, Inputs } from "../lib/model";
 
 const HOME_LABEL: Record<HomeType, string> = {
@@ -35,10 +35,15 @@ function kidsPhrase(kids: number): string {
   return kids === 0 ? "no kids" : kids === 1 ? "one child" : "two children";
 }
 
-function workPhrase(inp: Inputs): string {
+function workPhrase(inp: Inputs, lowest: CityResult): string {
   if (inp.workers === 0) return "neither of you earning";
-  if (inp.workers === 1) return `one of you grossing ${usdCompact(inp.salaryUsdPerEarner)}`;
-  return `both of you earning ${usdCompact(inp.salaryUsdPerEarner)} each`;
+  // Show the salary for the country of the lowest-cost city.
+  const sal =
+    lowest.city.geography === "india"
+      ? inrCompact(inp.salaryInrPerEarner)
+      : usdCompact(inp.salaryUsdPerEarner);
+  if (inp.workers === 1) return `one of you grossing ${sal}`;
+  return `both of you earning ${sal} each`;
 }
 
 function fundingClause(r: CityResult): string {
@@ -77,7 +82,7 @@ export function InputSummary({ inputs, lowest }: { inputs: Inputs; lowest: CityR
           want to <strong>{inputs.tenure}</strong> a {SEGMENT_LABEL[inputs.segment]}{" "}
           {HOME_LABEL[inputs.homeType]} and live {LIFESTYLE_PHRASE[inputs.lifestyle]}{" "}
           lifestyle. With <strong>{usdFull(inputs.netWorthUsd)}</strong> invested today and{" "}
-          {workPhrase(inputs)}, modeled at a <strong>{inputs.swrPct}%</strong> withdrawal
+          {workPhrase(inputs, lowest)}, modeled at a <strong>{inputs.swrPct}%</strong> withdrawal
           rate and <strong>{inputs.realReturnPct}%</strong> real returns, your lowest-cost
           path is <strong>{lowest.city.name}</strong> at{" "}
           <strong className="text-paper-accent dark:text-night-accent">
@@ -85,6 +90,10 @@ export function InputSummary({ inputs, lowest }: { inputs: Inputs; lowest: CityR
           </strong>{" "}
           — <strong>{funded}%</strong> funded today{fundingClause(lowest)}.{" "}
           {whySentence(lowest, inputs)}
+        </p>
+        <p className="mt-3 border-t border-paper-border pt-2 text-[11.5px] leading-snug text-paper-muted dark:border-night-border dark:text-night-muted">
+          Directional, not advice: figures use asking-side prices (deals often close
+          15–20% lower) and simplified effective taxes. Tune the assumptions below.
         </p>
       </div>
     </section>
