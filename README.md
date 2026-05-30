@@ -19,6 +19,9 @@ that's the whole product here.
 **[▶ Live demo](https://enough-wheat.vercel.app/)** &nbsp;·&nbsp; [What's changed](CHANGELOG.md)
 &nbsp;·&nbsp; Staging: every `develop` push & PR gets its own Vercel preview URL.
 
+**Docs:** [Product brief (3-pager)](docs/PRODUCT.md) · [Build spec (6-pager)](docs/BUILD-SPEC.md)
+· [Backlog](BACKLOG.md) · [Personas](docs/personas.md) · [Evaluation process](docs/evaluation-process.md)
+
 <!-- Add screenshots here, e.g.:
 ![Light theme](docs/light.png)
 ![Dark theme](docs/dark.png)
