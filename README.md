@@ -16,8 +16,8 @@ that's the whole product here.
 > cross-currency comparison is directional (not lifestyle-identical), and tax is
 > simplified to effective rates. See [Caveats](#caveats).
 
-**[▶ Live demo](#)** · _(production URL — add once deployed)_
-&nbsp;·&nbsp; **[Alpha / staging](#)** · _(preview URL for in-progress changes)_
+**[▶ Live demo](https://enough-wheat.vercel.app/)** &nbsp;·&nbsp; Alpha/staging: every
+`develop` push & PR gets its own Vercel preview URL.
 
 <!-- Add screenshots here, e.g.:
 ![Light theme](docs/light.png)
