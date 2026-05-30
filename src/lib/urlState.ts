@@ -8,6 +8,7 @@
  */
 
 import {
+  CITIES,
   REAL_RETURN_MAX,
   REAL_RETURN_MIN,
   SWR_MAX,
@@ -40,9 +41,11 @@ const KEY: Record<keyof Inputs, string> = {
   setupUsd: "su",
   advanced: "adv",
   filter: "f",
+  currentCity: "cc",
 };
 
 const FILTERS: Inputs["filter"][] = ["both", "india", "us"];
+const CURRENT_CITY_OPTIONS = [...CITIES.map((c) => c.id), "none"];
 
 const TENURES: Tenure[] = ["buy", "rent"];
 const HOME_TYPES: HomeType[] = ["3bhk", "4bhk", "5bhk", "penthouse", "bungalow"];
@@ -99,5 +102,6 @@ export function decodeInputs(search: string): Inputs {
     setupUsd: clamp(num(KEY.setupUsd, d.setupUsd), 0, 1_000_000),
     advanced: p.get(KEY.advanced) === "true",
     filter: oneOf(p.get(KEY.filter), FILTERS, d.filter),
+    currentCity: oneOf(p.get(KEY.currentCity), CURRENT_CITY_OPTIONS, d.currentCity),
   };
 }

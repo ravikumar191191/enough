@@ -3,6 +3,7 @@
  * Each control carries an ⓘ explaining what it means and what it assumes.
  */
 import {
+  CITIES,
   FX,
   INDIA_SCHOOL_LAKH,
   LIFESTYLE_MULT,
@@ -15,7 +16,10 @@ import {
 } from "../data/assumptions";
 import { inrCompact, pct, usdCompact, usdFull } from "../lib/format";
 import type { Inputs } from "../lib/model";
-import { LabeledSlider, Segmented } from "./ui";
+import { FieldLabel, LabeledSlider, Segmented } from "./ui";
+
+const INDIA_CITIES = CITIES.filter((c) => c.geography === "india");
+const US_CITIES = CITIES.filter((c) => c.geography === "us");
 
 export function Controls({
   inputs,
@@ -53,6 +57,42 @@ export function Controls({
             );
           })}
         </div>
+      </div>
+
+      {/* Where are you now? — the relevance anchor that powers the stay-or-go delta. */}
+      <div>
+        <FieldLabel
+          label="Where are you now?"
+          info={
+            <>
+              Your current city. Each option then shows how much it would{" "}
+              <b>free up</b> and how many years <b>sooner</b> you could stop working by
+              moving there. Pick "not sure" to hide the comparison.
+            </>
+          }
+        />
+        <select
+          aria-label="Where are you now?"
+          value={inputs.currentCity}
+          onChange={(e) => patch({ currentCity: e.target.value })}
+          className="focusable h-11 w-full rounded-lg border border-paper-border bg-paper-panel px-3 text-sm text-paper-ink dark:border-night-border dark:bg-night-panel dark:text-night-ink"
+        >
+          <option value="none">Not sure / hide comparison</option>
+          <optgroup label="United States">
+            {US_CITIES.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </optgroup>
+          <optgroup label="India">
+            {INDIA_CITIES.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </optgroup>
+        </select>
       </div>
 
       <Segmented

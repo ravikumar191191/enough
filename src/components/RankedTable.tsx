@@ -118,10 +118,51 @@ function fundedLabel(r: CityResult): string {
   return `~${r.yearsToFund}y to age ${r.fundedByAge}`;
 }
 
-function Row({ r, rank, swrPct }: { r: CityResult; rank: number; swrPct: number }) {
+/** The stay-or-go delta vs the "where are you now?" baseline. */
+function DeltaLine({ r, baseline }: { r: CityResult; baseline: CityResult }) {
+  const good = "text-emerald-700 dark:text-emerald-400";
+  const bad = "text-amber-700 dark:text-amber-400";
+  const dollar = r.totalUsd - baseline.totalUsd; // negative = cheaper (good)
+  const bothFinite = Number.isFinite(r.yearsToFund) && Number.isFinite(baseline.yearsToFund);
+  const years = baseline.yearsToFund - r.yearsToFund; // positive = sooner (good)
+
+  return (
+    <div className="mt-2 text-[12.5px]">
+      <span className="text-paper-muted dark:text-night-muted">vs {baseline.city.name}: </span>
+      <span className={`nums font-semibold ${dollar <= 0 ? good : bad}`}>
+        {dollar < 0
+          ? `${usdCompact(-dollar)} less`
+          : dollar > 0
+            ? `${usdCompact(dollar)} more`
+            : "same total"}
+      </span>
+      {bothFinite && years !== 0 && (
+        <>
+          <span className="text-paper-muted dark:text-night-muted"> · </span>
+          <span className={`nums font-semibold ${years > 0 ? good : bad}`}>
+            {Math.abs(years)}y {years > 0 ? "sooner" : "later"}
+          </span>
+        </>
+      )}
+    </div>
+  );
+}
+
+function Row({
+  r,
+  rank,
+  swrPct,
+  baseline,
+}: {
+  r: CityResult;
+  rank: number;
+  swrPct: number;
+  baseline: CityResult | null;
+}) {
   const [open, setOpen] = useState(false);
   const funded = Math.min(100, Math.round(r.fundedPct));
   const flag = r.city.geography === "india" ? "🇮🇳" : "🇺🇸";
+  const isHere = baseline?.city.id === r.city.id;
 
   return (
     <li
@@ -144,6 +185,11 @@ function Row({ r, rank, swrPct }: { r: CityResult; rank: number; swrPct: number 
             {r.isLowest && (
               <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-paper-accent px-2 py-0.5 text-[11px] font-semibold text-white dark:bg-night-accent dark:text-night-bg">
                 <Award size={12} /> Lowest
+              </span>
+            )}
+            {isHere && (
+              <span className="inline-flex shrink-0 items-center rounded-full border border-paper-border px-2 py-0.5 text-[11px] font-medium text-paper-muted dark:border-night-border dark:text-night-muted">
+                You're here
               </span>
             )}
           </div>
@@ -194,6 +240,8 @@ function Row({ r, rank, swrPct }: { r: CityResult; rank: number; swrPct: number 
           />
         </div>
 
+        {baseline && !isHere && <DeltaLine r={r} baseline={baseline} />}
+
         <div className="mt-2 flex flex-wrap gap-x-4 gap-y-0.5 text-[12px] text-paper-muted dark:text-night-muted">
           <span>
             Upfront <span className="nums text-paper-ink dark:text-night-ink">{usdCompact(r.upfrontUsd)}</span>
@@ -237,11 +285,13 @@ export function RankedTable({
   swrPct,
   filter,
   onFilterChange,
+  baseline,
 }: {
   results: CityResult[];
   swrPct: number;
   filter: Filter;
   onFilterChange: (f: Filter) => void;
+  baseline: CityResult | null;
 }) {
   const FILTERS: { value: Filter; label: string }[] = [
     { value: "both", label: "Both" },
@@ -280,7 +330,7 @@ export function RankedTable({
       </div>
       <ol className="flex flex-col gap-2.5" aria-live="polite">
         {results.map((r, i) => (
-          <Row key={r.city.id} r={r} rank={i + 1} swrPct={swrPct} />
+          <Row key={r.city.id} r={r} rank={i + 1} swrPct={swrPct} baseline={baseline} />
         ))}
       </ol>
     </section>

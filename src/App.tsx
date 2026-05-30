@@ -39,6 +39,16 @@ export default function App() {
   }, [ranked, inputs.filter]);
   const lowest = visible[0];
 
+  // The "where are you now?" baseline for the stay-or-go delta (from the full set,
+  // so it's available even when filtered out).
+  const baseline = useMemo(
+    () =>
+      inputs.currentCity === "none"
+        ? null
+        : ranked.find((r) => r.city.id === inputs.currentCity) ?? null,
+    [ranked, inputs.currentCity]
+  );
+
   // Display strings for the share card.
   const scenario = useMemo(() => {
     const funded = Math.min(100, Math.round(lowest.fundedPct));
@@ -63,7 +73,7 @@ export default function App() {
 
       <Headline lowest={lowest} />
 
-      <InputSummary inputs={inputs} lowest={lowest} />
+      <InputSummary inputs={inputs} lowest={lowest} baseline={baseline} />
 
       <main className="mx-auto max-w-5xl px-4 pt-6 sm:px-6">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(320px,360px)_1fr]">
@@ -77,6 +87,7 @@ export default function App() {
             swrPct={inputs.swrPct}
             filter={inputs.filter}
             onFilterChange={(f) => patch({ filter: f })}
+            baseline={baseline}
           />
         </div>
 

@@ -65,6 +65,16 @@ From the persona evaluation ([docs/evaluations](docs/evaluations/2026-05-30-v0.7
 - **U8 · (maybe) per-category annual breakdown** (Housing/Lifestyle/Kids/School) as the
   collapsed quick view, with our exact derivation ledger as "show the math."
 
+## From the usability study (2026-05-30) — next
+
+- **Sensitivity band** on the total (±15% prices / FX) — P1 trust ("precision without
+  error bars reads as naïve").
+- **Filter discoverability** — make India/US/Both more prominent or infer intent (P3).
+- **Peak-end polish** — celebrate "already funded"; reframe "out of reach" as *"here's
+  what closes the gap"* (P3 / all).
+- **Funded-meter redesign** into an unmistakable gauge (affordance — still reads as a control).
+- **Light social proof** once there's real usage (B2C trust).
+
 ## Later
 
 - **B5 · 380px viewport e2e test** in CI (Playwright). _(review)_
@@ -76,6 +86,10 @@ From the persona evaluation ([docs/evaluations](docs/evaluations/2026-05-30-v0.7
 
 ## Done
 
+- **v0.11 · Relevance fix — "Where are you now?" + stay-or-go delta** _(2026-05-30)_ —
+  the #1 finding from the usability study. Each city shows $ freed + years sooner vs your
+  current city; default baseline = a US metro so it's relevant on first load. Plus OG
+  card CTA + longer titles.
 - **v0.10 · U3 Open-Graph share card + U4 privacy-friendly analytics** _(2026-05-30)_ —
   per-scenario card via Vercel Edge (`/api/og`, `/share`); cookieless Vercel Web Analytics
   with `share` / `arrived_from_share` events. Verified on the develop preview.

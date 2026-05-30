@@ -131,6 +131,7 @@ describe("url state round-trips", () => {
       currentAge: 41,
       advanced: true,
       filter: "india",
+      currentCity: "BLR",
     };
     expect(decodeInputs(encodeInputs(custom))).toEqual(custom);
   });
