@@ -208,7 +208,7 @@ respects `prefers-reduced-motion`; one-handed at 380px.
 
 **Setup.**
 ```bash
-git clone https://github.com/ravikumar191191/enough.git && cd enough
+git clone https://github.com/ravikumar191191/firenough.git && cd enough
 npm install          # if the npm cache is root-owned: npm install --cache ./.npm-cache
 npm run dev          # http://localhost:5173  (edge functions do NOT run here)
 ```

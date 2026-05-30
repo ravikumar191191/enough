@@ -77,7 +77,7 @@ export function Header({
           <span className="text-paper-accent dark:text-night-accent">FIRE</span>nough
         </h1>
         <p className="mt-1 max-w-lg font-body text-[15px] leading-snug sm:text-base">
-          How much do you need so money's <strong>never the reason you work</strong> — in
+          What would it take to <strong>never have to work for money</strong> again — in
           every city you'd actually live in?
         </p>
         <p className="mt-1 max-w-lg text-[12.5px] text-paper-muted dark:text-night-muted">

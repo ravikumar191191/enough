@@ -29,7 +29,7 @@ export function Footer() {
       <p>
         Open source (Apache-2.0) · © 2026{" "}
         <a
-          href="https://github.com/ravikumar191191/enough"
+          href="https://github.com/ravikumar191191/firenough"
           className="focusable rounded underline decoration-dotted underline-offset-2 hover:text-paper-accent dark:hover:text-night-accent"
         >
           Ravi Kumar

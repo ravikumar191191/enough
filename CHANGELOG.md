@@ -1,5 +1,14 @@
 # What's changed
 
+## v0.14 — A clearer promise
+
+- **Sharper tagline:** *"What would it take to never have to work for money again — in
+  every city you'd actually live in?"* — a complete, positive promise (the old phrasing
+  trailed off).
+- **A/B-ready sharing (behind the scenes):** we can now post different share-card
+  framings and measure which one earns more clicks, cleanly attributed.
+- Project renamed to **FIREnough** on GitHub, with a real description.
+
 ## v0.13 — Now called FIREnough
 
 - **New name: FIREnough** — and a warmer promise. Instead of "how much to *stop working*"
