@@ -1,4 +1,6 @@
-import { useMemo } from "react";
+import { track } from "@vercel/analytics";
+import { Analytics } from "@vercel/analytics/react";
+import { useEffect, useMemo, useState } from "react";
 import { Controls } from "./components/Controls";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
@@ -8,10 +10,22 @@ import { RankedTable } from "./components/RankedTable";
 import { useTheme } from "./hooks/useTheme";
 import { useUrlState } from "./hooks/useUrlState";
 import { rankCities } from "./lib/model";
+import { usdFull } from "./lib/format";
 
 export default function App() {
   const [inputs, patch, reset] = useUrlState();
   const [theme, toggleTheme] = useTheme();
+
+  // Did this visit arrive from a shared link? Capture before useUrlState strips
+  // the ref marker from the URL, then record it once.
+  const [fromShare] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      new URLSearchParams(window.location.search).get("ref") === "share"
+  );
+  useEffect(() => {
+    if (fromShare) track("arrived_from_share");
+  }, [fromShare]);
 
   // Re-rank every city on any input change. Pure + tiny → well under one frame.
   const ranked = useMemo(() => rankCities(inputs), [inputs]);
@@ -25,9 +39,27 @@ export default function App() {
   }, [ranked, inputs.filter]);
   const lowest = visible[0];
 
+  // Display strings for the share card.
+  const scenario = useMemo(() => {
+    const funded = Math.min(100, Math.round(lowest.fundedPct));
+    const line =
+      lowest.yearsToFund === 0
+        ? `${funded}% funded today - already enough`
+        : !Number.isFinite(lowest.yearsToFund)
+          ? `${funded}% funded today`
+          : `${funded}% funded today - enough by age ${lowest.fundedByAge}`;
+    return { city: lowest.city.name, amount: usdFull(lowest.totalUsd), line };
+  }, [lowest]);
+
   return (
     <div className="min-h-screen">
-      <Header theme={theme} onToggleTheme={toggleTheme} onReset={reset} />
+      <Analytics />
+      <Header
+        theme={theme}
+        onToggleTheme={toggleTheme}
+        onReset={reset}
+        scenario={scenario}
+      />
 
       <Headline lowest={lowest} />
 
