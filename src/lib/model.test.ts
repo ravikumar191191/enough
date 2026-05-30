@@ -6,6 +6,7 @@ import {
   afterTaxUS,
   computeCity,
   rankCities,
+  totalRangeUsd,
   yearsToFund,
   type Inputs,
 } from "./model";
@@ -85,6 +86,19 @@ describe("ranking", () => {
     }
     expect(r[0].isLowest).toBe(true);
     expect(r.slice(1).every((x) => !x.isLowest)).toBe(true);
+  });
+
+  it("sensitivity range brackets the point estimate (low < total < high)", () => {
+    for (const c of [india, us]) {
+      const total = computeCity(c, DEFAULT_INPUTS).totalUsd;
+      const { low, high } = totalRangeUsd(c, DEFAULT_INPUTS);
+      expect(low).toBeLessThan(total);
+      expect(high).toBeGreaterThan(total);
+    }
+    // costScale === 1 must be identity (the normal path is untouched).
+    expect(computeCity(us, DEFAULT_INPUTS, 1).totalUsd).toBe(
+      computeCity(us, DEFAULT_INPUTS).totalUsd
+    );
   });
 
   it("earners reduce the corpus (covered spending)", () => {

@@ -18,6 +18,7 @@ import {
   INDIA_TAX_SLABS,
   LIFESTYLE_MULT,
   RENT_YIELD,
+  SENSITIVITY_PCT,
   US_CLOSING_COST_PCT,
   US_FEDERAL_SLABS,
   US_HEALTHCARE_USD,
@@ -190,7 +191,7 @@ export function yearsToFund(
 // Per-city computation
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function computeCity(city: CityData, inp: Inputs): CityResult {
+export function computeCity(city: CityData, inp: Inputs, costScale = 1): CityResult {
   const lifeMult = LIFESTYLE_MULT[inp.lifestyle];
   const swr = inp.swrPct / 100;
   const buying = inp.tenure === "buy";
@@ -248,6 +249,20 @@ export function computeCity(city: CityData, inp: Inputs): CityResult {
     bufferLocal = BUFFER_LOCAL.us;
   }
 
+  // Sensitivity: scale only the data-derived COSTS (not income, setup, or buffer),
+  // then re-derive spend & upfront. costScale === 1 is identity (the normal path).
+  if (costScale !== 1) {
+    homeValueLocal *= costScale;
+    baseLocal *= costScale;
+    schoolLocal *= costScale;
+    healthcareLocal *= costScale;
+    propTaxLocal *= costScale;
+    rentLocal *= costScale;
+    txnLocal *= costScale;
+    annualSpendLocal = baseLocal + schoolLocal + healthcareLocal + propTaxLocal + rentLocal;
+    upfrontLocal = buying ? homeValueLocal + txnLocal + setupLocal : setupLocal;
+  }
+
   const uncoveredLocal = Math.max(0, annualSpendLocal - netIncomeLocal);
   const corpusLocal = uncoveredLocal / swr;
   const totalLocal = upfrontLocal + corpusLocal + bufferLocal;
@@ -295,6 +310,21 @@ export function computeCity(city: CityData, inp: Inputs): CityResult {
     withinHorizon,
     flags: city.flags,
     isLowest: false,
+  };
+}
+
+/**
+ * The total's sensitivity band — recompute with costs scaled ±SENSITIVITY_PCT.
+ * A single point estimate over-claims precision; this shows the honest range.
+ */
+export function totalRangeUsd(
+  city: CityData,
+  inp: Inputs,
+  pct = SENSITIVITY_PCT
+): { low: number; high: number } {
+  return {
+    low: computeCity(city, inp, 1 - pct / 100).totalUsd,
+    high: computeCity(city, inp, 1 + pct / 100).totalUsd,
   };
 }
 

@@ -3,11 +3,18 @@
  * years-to-fund. Sticky on scroll (spec §7).
  */
 import { Check, TrendingUp } from "lucide-react";
-import { usdFull } from "../lib/format";
+import { SENSITIVITY_PCT } from "../data/assumptions";
+import { usdCompact, usdFull } from "../lib/format";
 import type { CityResult } from "../lib/model";
 import { InfoTag } from "./ui";
 
-export function Headline({ lowest }: { lowest: CityResult }) {
+export function Headline({
+  lowest,
+  range,
+}: {
+  lowest: CityResult;
+  range: { low: number; high: number };
+}) {
   const funded = Math.min(100, Math.round(lowest.fundedPct));
   const alreadyFunded = lowest.yearsToFund === 0;
   const unreachable = !Number.isFinite(lowest.yearsToFund);
@@ -29,6 +36,17 @@ export function Headline({ lowest }: { lowest: CityResult }) {
         <span className="nums font-display text-3xl font-bold text-paper-accent dark:text-night-accent sm:text-4xl">
           {usdFull(lowest.totalUsd)}
         </span>
+      </div>
+
+      <div className="mt-1 flex items-center gap-1.5 text-[12px] text-paper-muted dark:text-night-muted">
+        <span className="nums">
+          range {usdCompact(range.low)}–{usdCompact(range.high)}
+        </span>
+        <InfoTag label="Estimate range">
+          Our cost data (home prices, living costs) are asking / midpoint estimates, so
+          the real number sits in a band — here, costs ±{SENSITIVITY_PCT}%. Asking prices
+          skew high, so reality often lands in the lower half.
+        </InfoTag>
       </div>
 
       <div className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-1 text-sm">

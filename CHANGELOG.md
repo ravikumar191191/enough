@@ -3,6 +3,13 @@
 Plain-language notes on what's new in Enough, newest first. (Built rapidly in one
 session, so the dates cluster — the version numbers show the order things shipped.)
 
+## v0.12 — An honest range, not just a number
+
+- **Sensitivity band.** The headline now shows a range next to the single number (e.g.
+  *"$1.4M–$1.9M"*) — because our cost estimates are approximate. A precise-looking number
+  can mislead; the band keeps us honest, and a tap explains it (asking prices skew high,
+  so reality usually lands in the lower half).
+
 ## v0.11 — See what moving actually saves you
 
 - **The stay-or-go comparison.** Tell us where you live now ("Where are you now?") and
