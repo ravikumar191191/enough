@@ -3,6 +3,14 @@
 Plain-language notes on what's new in Enough, newest first. (Built rapidly in one
 session, so the dates cluster — the version numbers show the order things shipped.)
 
+## v0.10 — Shareable, with a real preview card
+
+- **Rich share previews.** Share your scenario and the link now unfurls into a clean
+  card — your city, your number, and how close you are — so it invites a click instead
+  of looking like a random URL.
+- **Anonymous, cookieless analytics** (behind the scenes) so we can tell whether sharing
+  actually works and what to improve next. No personal data, no tracking cookies.
+
 ## v0.9 — Faster to use, and filterable
 
 - **Quick and Advanced modes.** You now start with just the essentials. Tap **Advanced**

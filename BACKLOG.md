@@ -76,6 +76,10 @@ From the persona evaluation ([docs/evaluations](docs/evaluations/2026-05-30-v0.7
 
 ## Done
 
+- **v0.10 · U3 Open-Graph share card + U4 privacy-friendly analytics** _(2026-05-30)_ —
+  per-scenario card via Vercel Edge (`/api/og`, `/share`); cookieless Vercel Web Analytics
+  with `share` / `arrived_from_share` events. Verified on the develop preview.
+  _(Manual step: enable Web Analytics in the Vercel dashboard.)_
 - **v0.9 · U1 Quick/Advanced mode, U2 India/US/Both filter, U5 editable number inputs**
   _(2026-05-30)_ — shipped to production. Plus **San Diego** added (first sourced
   city from the breadth backlog).
