@@ -129,6 +129,8 @@ describe("url state round-trips", () => {
       netWorthUsd: 3_250_000,
       swrPct: 2.8,
       currentAge: 41,
+      advanced: true,
+      filter: "india",
     };
     expect(decodeInputs(encodeInputs(custom))).toEqual(custom);
   });

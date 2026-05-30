@@ -14,8 +14,16 @@ export default function App() {
   const [theme, toggleTheme] = useTheme();
 
   // Re-rank every city on any input change. Pure + tiny → well under one frame.
-  const results = useMemo(() => rankCities(inputs), [inputs]);
-  const lowest = results[0];
+  const ranked = useMemo(() => rankCities(inputs), [inputs]);
+  // Apply the India/US/Both filter, then re-tag the lowest within the visible set.
+  const visible = useMemo(() => {
+    const list =
+      inputs.filter === "both"
+        ? ranked
+        : ranked.filter((r) => r.city.geography === inputs.filter);
+    return list.map((r, i) => ({ ...r, isLowest: i === 0 }));
+  }, [ranked, inputs.filter]);
+  const lowest = visible[0];
 
   return (
     <div className="min-h-screen">
@@ -32,7 +40,12 @@ export default function App() {
             <Controls inputs={inputs} patch={patch} />
           </aside>
 
-          <RankedTable results={results} swrPct={inputs.swrPct} />
+          <RankedTable
+            results={visible}
+            swrPct={inputs.swrPct}
+            filter={inputs.filter}
+            onFilterChange={(f) => patch({ filter: f })}
+          />
         </div>
 
         <Footer />

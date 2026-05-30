@@ -230,20 +230,53 @@ function Row({ r, rank, swrPct }: { r: CityResult; rank: number; swrPct: number 
   );
 }
 
+type Filter = "both" | "india" | "us";
+
 export function RankedTable({
   results,
   swrPct,
+  filter,
+  onFilterChange,
 }: {
   results: CityResult[];
   swrPct: number;
+  filter: Filter;
+  onFilterChange: (f: Filter) => void;
 }) {
+  const FILTERS: { value: Filter; label: string }[] = [
+    { value: "both", label: "Both" },
+    { value: "india", label: "🇮🇳 India" },
+    { value: "us", label: "🇺🇸 US" },
+  ];
   return (
     <section aria-label="Cities ranked by total needed">
-      <div className="mb-3 flex items-center justify-between">
+      <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
         <h2 className="font-display text-lg font-semibold">Ranked — lowest first</h2>
-        <span className="text-[12px] text-paper-muted dark:text-night-muted">
-          total in USD
-        </span>
+        <div
+          role="group"
+          aria-label="Filter cities"
+          className="inline-flex rounded-lg border border-paper-border p-0.5 dark:border-night-border"
+        >
+          {FILTERS.map((f) => {
+            const active = f.value === filter;
+            return (
+              <button
+                key={f.value}
+                type="button"
+                aria-pressed={active}
+                onClick={() => onFilterChange(f.value)}
+                className={[
+                  "focusable rounded-md px-2.5 py-1 text-[13px]",
+                  active
+                    ? "bg-paper-accent text-white dark:bg-night-accent dark:text-night-bg"
+                    : "text-paper-muted dark:text-night-muted",
+                ].join(" ")}
+              >
+                {f.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
       <ol className="flex flex-col gap-2.5" aria-live="polite">
         {results.map((r, i) => (

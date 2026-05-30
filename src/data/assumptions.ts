@@ -326,14 +326,27 @@ export const CITIES: CityData[] = [
     stateTaxRatePct: 13.0,
     flags: [],
   },
+  {
+    // San Diego: median home ~$1.0M (Redfin/Zillow Feb–Apr 2026), adjusted up for
+    // a good-district family home. CA property-tax & state income tax as elsewhere.
+    id: "SD",
+    name: "San Diego",
+    region: "California",
+    geography: "us",
+    homeAnchorUsd: 1_400_000,
+    baseLifestyleUsd: 105_000,
+    propertyTaxPct: 0.75,
+    stateTaxRatePct: 13.0,
+    flags: [],
+  },
 ];
 
 /**
  * Sources (spec §5):
  * - India ₹/sqft & prices: 99acres / NoBroker / Square Yards, May 2026.
  * - US homes: Redfin / Zillow Feb–Apr 2026 medians (Seattle ~$865k, Bay Area
- *   ~$1.4M, San Jose ~$1.63M, SF ~$1.3M, NYC ~$800k), adjusted UP for
- *   good-district family homes.
+ *   ~$1.4M, San Jose ~$1.63M, SF ~$1.3M, NYC ~$800k, San Diego ~$1.0M), adjusted
+ *   UP for good-district family homes.
  * - Property-tax & ACA healthcare: standard 2026 effective rates.
  * - Tax tables: India new regime FY25-26; US federal single-filer 2025/26.
  * All figures are asking/midpoint; transactions often close 15–20% lower.

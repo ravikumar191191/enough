@@ -37,9 +37,14 @@ From the persona evaluation ([docs/evaluations](docs/evaluations/2026-05-30-v0.7
 
 ## v0.9 — "Reach & usability" (next)
 
+> Adopted from the Figma Make comparison ([eval](docs/evaluations/2026-05-30-figma-vs-ours.md)).
+> **Rule: borrow Figma's UX patterns, never its data or model** (both were broken).
+
 - **U1 · Quick/guided mode** — essentials first, advanced controls behind a reveal
-  (P2 time-to-value). _(aligned)_
-- **U2 · India-only / US-only / both filter** (P3 relevance; cheap, high value).
+  (P2 time-to-value). _(aligned; Figma proved the layout)_
+- **U2 · India-only / US-only / both filter** (P3 relevance; cheap, high value). _(Figma had it)_
+- **U5 · Editable number next to each slider** — type an exact salary / net worth (P1
+  precision + a11y). Keep the slider for feel; add an inline editable value. _(Figma had it)_
 - **U3 · Open-Graph share card** — per-scenario preview image so every shared link is a
   billboard (L1 growth loop). Needs a serverless/OG-image step.
 - **U4 · Privacy-friendly analytics** (Vercel/Plausible) — we currently ship blind;
@@ -48,10 +53,17 @@ From the persona evaluation ([docs/evaluations](docs/evaluations/2026-05-30-v0.7
   in v0.7 was the stopgap).
 - **B6 · Stack the two age sliders on very narrow phones** (`grid-cols-1 sm:grid-cols-2`).
 
-## v0.10 — "Depth" (later)
+## v0.10 — "Sourced breadth & depth" (later)
 
+- **U6 · More cities — ONLY with sourced data.** Prioritize the no-income-tax US door
+  (Austin TX, Miami FL) and India breadth (Chennai). Surface "No State Tax" for those.
+  *Gate: real, dated prices/tax/lifestyle — unsourced cities would break our trust moat.*
 - **B3 · v6.1 features:** geography-aware lifestyle equivalence; school-board selector
   (ICSE/CBSE/IB + US public/private); RNOR flag with a one-line note. _(SPEC §6)_
+- **U7 · (maybe) numeric AQI / livability signal** instead of a binary flag — informative
+  for P3, but needs sourced seasonal data; keep it a light signal, not a ranking factor.
+- **U8 · (maybe) per-category annual breakdown** (Housing/Lifestyle/Kids/School) as the
+  collapsed quick view, with our exact derivation ledger as "show the math."
 
 ## Later
 
@@ -64,8 +76,11 @@ From the persona evaluation ([docs/evaluations](docs/evaluations/2026-05-30-v0.7
 
 ## Done
 
-- **v0.8 (partial) · F1 per-geography salary, F2 asking-price caveat near the answer**
-  _(2026-05-30)_ — on develop preview.
+- **v0.9 · U1 Quick/Advanced mode, U2 India/US/Both filter, U5 editable number inputs**
+  _(2026-05-30)_ — shipped to production. Plus **San Diego** added (first sourced
+  city from the breadth backlog).
+- **v0.8 · F1 per-geography salary, F2 asking-price caveat, F3 per-row "show the math"**
+  _(2026-05-30)_ — shipped to production.
 - **v0.7 · C1–C5, C3a — comprehension pass** _(2026-05-30)_ — product explainer, headline
   ⓘ explainers, school note, "move-in costs" label, "Funded today"-labeled bars. On
   develop preview (PR awaiting review → merge to production).
