@@ -32,7 +32,7 @@ export default function App() {
             <Controls inputs={inputs} patch={patch} />
           </aside>
 
-          <RankedTable results={results} />
+          <RankedTable results={results} swrPct={inputs.swrPct} />
         </div>
 
         <Footer />

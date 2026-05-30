@@ -3,7 +3,8 @@
  * all in USD with an ₹ echo for India. Mobile-first cards that line up like a
  * table on wider screens. Re-ranks instantly as inputs change.
  */
-import { Award } from "lucide-react";
+import { Award, ChevronDown } from "lucide-react";
+import { useState } from "react";
 import type { Flag } from "../data/assumptions";
 import { inrCompact, usdCompact, usdFull } from "../lib/format";
 import type { CityResult } from "../lib/model";
@@ -13,6 +14,92 @@ const FLAG_STYLE: Record<Flag["kind"], string> = {
   warn: "bg-amber-100 text-amber-800 dark:bg-amber-500/15 dark:text-amber-300",
   good: "bg-emerald-100 text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300",
 };
+
+/** One label/value line in the "show the math" ledger. */
+function LineItem({
+  label,
+  v,
+  strong,
+  total,
+}: {
+  label: string;
+  v: number;
+  strong?: boolean;
+  total?: boolean;
+}) {
+  return (
+    <div
+      className={[
+        "flex justify-between gap-3 py-0.5",
+        total ? "mt-1 border-t border-paper-border pt-1.5 dark:border-night-border" : "",
+      ].join(" ")}
+    >
+      <span
+        className={
+          total || strong ? "font-semibold" : "text-paper-muted dark:text-night-muted"
+        }
+      >
+        {label}
+      </span>
+      <span
+        className={[
+          "nums shrink-0",
+          total
+            ? "font-bold text-paper-accent dark:text-night-accent"
+            : strong
+              ? "font-semibold"
+              : "text-paper-ink dark:text-night-ink",
+        ].join(" ")}
+      >
+        {usdFull(v)}
+      </span>
+    </div>
+  );
+}
+
+/** The expandable derivation behind a city's total (the "show the math" view). */
+function ShowMath({ r, swrPct }: { r: CityResult; swrPct: number }) {
+  const b = r.breakdown;
+  const earning = r.netIncomeUsd > 0;
+  return (
+    <div className="mt-3 rounded-lg bg-paper-bg/60 p-3 text-[12.5px] leading-tight dark:bg-night-bg/40">
+      <p className="mb-1 text-[11px] font-medium uppercase tracking-wide text-paper-muted dark:text-night-muted">
+        Spending each year
+      </p>
+      <LineItem label="Base lifestyle" v={b.baseLifestyleUsd} />
+      {b.schoolUsd > 0 && <LineItem label="Schooling" v={b.schoolUsd} />}
+      {b.healthcareUsd > 0 && <LineItem label="Healthcare" v={b.healthcareUsd} />}
+      {b.propertyTaxUsd > 0 && <LineItem label="Property tax" v={b.propertyTaxUsd} />}
+      {b.rentUsd > 0 && <LineItem label="Rent" v={b.rentUsd} />}
+      <LineItem label="Annual spend" v={r.annualSpendUsd} strong />
+      {earning && <LineItem label="less after-tax income" v={r.netIncomeUsd} />}
+      {earning && <LineItem label="Uncovered each year" v={r.uncoveredUsd} strong />}
+
+      <p className="mb-1 mt-3 text-[11px] font-medium uppercase tracking-wide text-paper-muted dark:text-night-muted">
+        Nest egg
+      </p>
+      <LineItem label={`Corpus = uncovered ÷ ${swrPct}% SWR`} v={r.corpusUsd} strong />
+
+      <p className="mb-1 mt-3 text-[11px] font-medium uppercase tracking-wide text-paper-muted dark:text-night-muted">
+        Up front
+      </p>
+      {r.homeUsd > 0 && <LineItem label="Home purchase" v={r.homeUsd} />}
+      {b.transactionCostUsd > 0 && (
+        <LineItem
+          label={r.city.geography === "india" ? "Stamp duty" : "Closing costs"}
+          v={b.transactionCostUsd}
+        />
+      )}
+      <LineItem label="Move-in costs" v={b.setupUsd} />
+      <LineItem label="Upfront" v={r.upfrontUsd} strong />
+
+      <div className="mt-3">
+        <LineItem label="Cash buffer" v={r.bufferUsd} />
+        <LineItem label="Total needed" v={r.totalUsd} total />
+      </div>
+    </div>
+  );
+}
 
 function FlagChip({ flag }: { flag: Flag }) {
   return (
@@ -31,7 +118,8 @@ function fundedLabel(r: CityResult): string {
   return `~${r.yearsToFund}y to age ${r.fundedByAge}`;
 }
 
-function Row({ r, rank }: { r: CityResult; rank: number }) {
+function Row({ r, rank, swrPct }: { r: CityResult; rank: number; swrPct: number }) {
+  const [open, setOpen] = useState(false);
   const funded = Math.min(100, Math.round(r.fundedPct));
   const flag = r.city.geography === "india" ? "🇮🇳" : "🇺🇸";
 
@@ -122,12 +210,33 @@ function Row({ r, rank }: { r: CityResult; rank: number }) {
             </span>
           )}
         </div>
+
+        <button
+          type="button"
+          onClick={() => setOpen((o) => !o)}
+          aria-expanded={open}
+          className="focusable mt-2 inline-flex items-center gap-1 text-[12px] font-medium text-paper-accent dark:text-night-accent"
+        >
+          <ChevronDown
+            size={14}
+            className={`transition-transform ${open ? "rotate-180" : ""}`}
+          />
+          {open ? "Hide the math" : "Show the math"}
+        </button>
+
+        {open && <ShowMath r={r} swrPct={swrPct} />}
       </div>
     </li>
   );
 }
 
-export function RankedTable({ results }: { results: CityResult[] }) {
+export function RankedTable({
+  results,
+  swrPct,
+}: {
+  results: CityResult[];
+  swrPct: number;
+}) {
   return (
     <section aria-label="Cities ranked by total needed">
       <div className="mb-3 flex items-center justify-between">
@@ -138,7 +247,7 @@ export function RankedTable({ results }: { results: CityResult[] }) {
       </div>
       <ol className="flex flex-col gap-2.5" aria-live="polite">
         {results.map((r, i) => (
-          <Row key={r.city.id} r={r} rank={i + 1} />
+          <Row key={r.city.id} r={r} rank={i + 1} swrPct={swrPct} />
         ))}
       </ol>
     </section>
