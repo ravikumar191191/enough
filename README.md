@@ -152,10 +152,11 @@ SPEC.md                 # the build brief
 
 ### Deploy
 
-CI ([`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)) typechecks, tests,
-builds, and publishes to **GitHub Pages** on push to `main` (enable Pages → "GitHub
-Actions" in repo settings). The build uses a relative `base`, so it also drops onto
-**Vercel** (framework: Vite) or any static host with no config.
+**Vercel** hosts it: `main` → production, every `develop` push / PR → its own preview
+URL. CI ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)) type-checks, tests, and
+builds on every push and PR (deployment is Vercel's job — the standard "CI on GitHub, CD
+on the host" split). Two small Vercel Edge functions power per-scenario share cards
+([`api/og.tsx`](api/og.tsx), [`api/share.tsx`](api/share.tsx)).
 
 ## Built with Claude Code
 
@@ -167,4 +168,9 @@ over the financial math before shipping.
 
 ## License
 
-[MIT](LICENSE)
+**[Apache License 2.0](LICENSE)** — free to use, modify, and distribute (including
+commercially). Per the license, any redistribution or derivative must keep the
+[`NOTICE`](NOTICE) file. A credit — *"Built on Enough by @ravikumar191191"* — is
+appreciated wherever you build on it.
+
+© 2026 Ravi Kumar ([@ravikumar191191](https://github.com/ravikumar191191)).

@@ -4,7 +4,7 @@
   "version": "0.10.0",
   "type": "module",
   "description": "Your cross-border 'enough number' — India and US cities ranked side by side.",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",

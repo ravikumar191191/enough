@@ -27,14 +27,21 @@ export function Footer() {
         India new-regime FY25-26 and US federal 2025/26 tax tables.
       </p>
       <p>
-        Open source · built with{" "}
+        Open source (Apache-2.0) · © 2026{" "}
+        <a
+          href="https://github.com/ravikumar191191/enough"
+          className="focusable rounded underline decoration-dotted underline-offset-2 hover:text-paper-accent dark:hover:text-night-accent"
+        >
+          Ravi Kumar
+        </a>{" "}
+        · built with{" "}
         <a
           href="https://claude.com/claude-code"
           className="focusable rounded underline decoration-dotted underline-offset-2 hover:text-paper-accent dark:hover:text-night-accent"
         >
           Claude Code
         </a>
-        . All inputs live in the URL — copy the link to share your exact scenario.
+        . Inputs live in the URL — copy the link to share your exact scenario.
       </p>
     </footer>
   );
