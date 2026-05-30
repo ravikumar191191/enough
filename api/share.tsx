@@ -38,7 +38,11 @@ export default function handler(req: Request) {
   const search = to.startsWith("?") ? to : to ? `?${to}` : "";
   const appUrl = `${origin}/${search}${search ? "&" : "?"}ref=share`;
 
-  const title = `${city}${amount ? ` - ${amount}` : ""} | Enough`;
+  // Title tuned to ~50–60 chars with a value hook + question (better click-through).
+  const title = amount
+    ? `${city}: ${amount} to stop working — what's your number?`
+    : "Enough — where can you afford to stop working? India vs US";
+  const description = `${line} — compare India & US cities and find your own "enough" number, free.`;
 
   const html = `<!doctype html>
 <html lang="en">
@@ -48,13 +52,13 @@ export default function handler(req: Request) {
   <title>${esc(title)}</title>
   <meta property="og:type" content="website" />
   <meta property="og:title" content="${esc(title)}" />
-  <meta property="og:description" content="${esc(line)}" />
+  <meta property="og:description" content="${esc(description)}" />
   <meta property="og:image" content="${esc(ogImage)}" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${esc(title)}" />
-  <meta name="twitter:description" content="${esc(line)}" />
+  <meta name="twitter:description" content="${esc(description)}" />
   <meta name="twitter:image" content="${esc(ogImage)}" />
   <meta http-equiv="refresh" content="0; url=${esc(appUrl)}" />
 </head>

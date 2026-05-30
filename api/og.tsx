@@ -61,8 +61,13 @@ export default function handler(req: Request) {
 
         <div style={{ display: "flex", fontSize: 38, color: "#23201a" }}>{line}</div>
 
-        <div style={{ display: "flex", fontSize: 26, color: "#6f685b" }}>
-          enough-wheat.vercel.app   -   not financial advice
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          <div style={{ display: "flex", fontSize: 36, color: "#9a3412", fontWeight: 600 }}>
+            Find your number, free, at enough-wheat.vercel.app
+          </div>
+          <div style={{ display: "flex", fontSize: 22, color: "#6f685b" }}>
+            India and US cities ranked   -   not financial advice
+          </div>
         </div>
       </div>
     ),
