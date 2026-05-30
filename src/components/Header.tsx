@@ -1,6 +1,7 @@
 /**
  * Header.tsx — title, Day/Night toggle, Share (copies the stateful URL), Reset.
  */
+import { track } from "@vercel/analytics";
 import { Check, Moon, RotateCcw, Share2, Sun } from "lucide-react";
 import { useState } from "react";
 import type { Theme } from "../hooks/useTheme";
@@ -31,15 +32,31 @@ export function Header({
   theme,
   onToggleTheme,
   onReset,
+  scenario,
 }: {
   theme: Theme;
   onToggleTheme: () => void;
   onReset: () => void;
+  scenario: { city: string; amount: string; line: string };
 }) {
   const [copied, setCopied] = useState(false);
 
   const share = async () => {
-    const url = window.location.href;
+    // Build a /share link carrying display strings (for the preview card) + the
+    // current inputs (`to`), so the recipient sees a rich card and lands on the
+    // exact scenario.
+    const params = new URLSearchParams({
+      city: scenario.city,
+      amount: scenario.amount,
+      line: scenario.line,
+      to: window.location.search,
+    });
+    const url = `${window.location.origin}/share?${params.toString()}`;
+    try {
+      track("share");
+    } catch {
+      // analytics not available (e.g. local dev) — ignore
+    }
     try {
       if (navigator.share) {
         await navigator.share({ title: "Enough — my number", url });
