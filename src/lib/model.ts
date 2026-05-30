@@ -58,6 +58,10 @@ export interface Inputs {
   planUntilAge: number;
   swrPct: number;
   setupUsd: number; // one-time setup, USD (converted to ₹ for India)
+
+  // View state — persisted in the URL, but NOT used by the model.
+  advanced: boolean; // false = Quick mode (essentials only); true = all controls
+  filter: "both" | "india" | "us"; // which cities the ranked list shows
 }
 
 export const DEFAULT_INPUTS: Inputs = {
@@ -77,6 +81,8 @@ export const DEFAULT_INPUTS: Inputs = {
   planUntilAge: 95,
   swrPct: 3.5,
   setupUsd: 50_000,
+  advanced: false,
+  filter: "both",
 };
 
 // ─────────────────────────────────────────────────────────────────────────────

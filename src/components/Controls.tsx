@@ -26,6 +26,35 @@ export function Controls({
 }) {
   return (
     <div className="flex flex-col gap-6">
+      {/* Quick / Advanced mode toggle (U1). Quick hides the deeper assumptions. */}
+      <div className="flex justify-end">
+        <div
+          role="group"
+          aria-label="Detail level"
+          className="inline-flex rounded-lg border border-paper-border p-0.5 dark:border-night-border"
+        >
+          {(["quick", "advanced"] as const).map((m) => {
+            const active = (m === "advanced") === inputs.advanced;
+            return (
+              <button
+                key={m}
+                type="button"
+                aria-pressed={active}
+                onClick={() => patch({ advanced: m === "advanced" })}
+                className={[
+                  "focusable rounded-md px-3 py-1.5 text-sm capitalize",
+                  active
+                    ? "bg-paper-accent text-white dark:bg-night-accent dark:text-night-bg"
+                    : "text-paper-muted dark:text-night-muted",
+                ].join(" ")}
+              >
+                {m}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       <Segmented
         label="Buy or rent"
         value={inputs.tenure}
@@ -63,22 +92,24 @@ export function Controls({
         }
       />
 
-      <Segmented
-        label="Segment"
-        value={inputs.segment}
-        onChange={(v) => patch({ segment: v })}
-        options={[
-          { value: "mid", label: "Mid" },
-          { value: "premium", label: "Premium" },
-          { value: "luxury", label: "Luxury" },
-        ]}
-        info={
-          <>
-            Build/finish quality. India uses a per-city rate card; the US scales the
-            home anchor (Mid 0.7×, Premium 1.0×, Luxury 1.6×).
-          </>
-        }
-      />
+      {inputs.advanced && (
+        <Segmented
+          label="Segment"
+          value={inputs.segment}
+          onChange={(v) => patch({ segment: v })}
+          options={[
+            { value: "mid", label: "Mid" },
+            { value: "premium", label: "Premium" },
+            { value: "luxury", label: "Luxury" },
+          ]}
+          info={
+            <>
+              Build/finish quality. India uses a per-city rate card; the US scales the
+              home anchor (Mid 0.7×, Premium 1.0×, Luxury 1.6×).
+            </>
+          }
+        />
+      )}
 
       <Segmented
         label="Lifestyle"
@@ -180,6 +211,7 @@ export function Controls({
             value={inputs.salaryUsdPerEarner}
             onChange={(v) => patch({ salaryUsdPerEarner: v })}
             format={(v) => usdCompact(v)}
+            editable
             info={
               <>
                 Gross $/earner if you're working in a <b>US</b> city. Taxed federal +
@@ -195,6 +227,7 @@ export function Controls({
             value={inputs.salaryInrPerEarner}
             onChange={(v) => patch({ salaryInrPerEarner: v })}
             format={(v) => inrCompact(v)}
+            editable
             info={
               <>
                 Gross ₹/earner if you're working in an <b>India</b> city. Taxed under the
@@ -225,11 +258,14 @@ export function Controls({
             </span>
           </span>
         )}
+        editable
         info={<>Investable liquid net worth today, in USD (₹ shown alongside).</>}
       />
 
-      <LabeledSlider
-        label="Real return"
+      {inputs.advanced && (
+        <>
+          <LabeledSlider
+            label="Real return"
         min={REAL_RETURN_MIN}
         max={REAL_RETURN_MAX}
         step={0.5}
@@ -299,6 +335,7 @@ export function Controls({
             </span>
           </span>
         )}
+        editable
         info={
           <>
             A single up-front cost for getting settled — furniture, a car, deposits, the
@@ -307,6 +344,8 @@ export function Controls({
           </>
         }
       />
+        </>
+      )}
     </div>
   );
 }

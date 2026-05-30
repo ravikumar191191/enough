@@ -38,7 +38,11 @@ const KEY: Record<keyof Inputs, string> = {
   planUntilAge: "pa",
   swrPct: "sw",
   setupUsd: "su",
+  advanced: "adv",
+  filter: "f",
 };
+
+const FILTERS: Inputs["filter"][] = ["both", "india", "us"];
 
 const TENURES: Tenure[] = ["buy", "rent"];
 const HOME_TYPES: HomeType[] = ["3bhk", "4bhk", "5bhk", "penthouse", "bungalow"];
@@ -93,5 +97,7 @@ export function decodeInputs(search: string): Inputs {
     planUntilAge: clamp(num(KEY.planUntilAge, d.planUntilAge), 80, 100),
     swrPct: clamp(num(KEY.swrPct, d.swrPct), SWR_MIN, SWR_MAX),
     setupUsd: clamp(num(KEY.setupUsd, d.setupUsd), 0, 1_000_000),
+    advanced: p.get(KEY.advanced) === "true",
+    filter: oneOf(p.get(KEY.filter), FILTERS, d.filter),
   };
 }

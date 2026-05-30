@@ -143,7 +143,55 @@ export function Segmented<T extends string | number>({
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// LabeledSlider — range with a live, formatted readout
+// NumberField — type an exact value. Local text state; commits (clamped) on blur/Enter.
+// ─────────────────────────────────────────────────────────────────────────────
+function NumberField({
+  value,
+  min,
+  max,
+  step,
+  onCommit,
+  ariaLabel,
+}: {
+  value: number;
+  min: number;
+  max: number;
+  step: number;
+  onCommit: (v: number) => void;
+  ariaLabel: string;
+}) {
+  const [text, setText] = useState(String(value));
+  // Re-sync when the value changes elsewhere (e.g. the slider moves).
+  useEffect(() => setText(String(value)), [value]);
+
+  const commit = () => {
+    const n = Number(text);
+    const v = Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : value;
+    onCommit(v);
+    setText(String(v));
+  };
+
+  return (
+    <input
+      type="number"
+      inputMode="numeric"
+      aria-label={ariaLabel}
+      value={text}
+      min={min}
+      max={max}
+      step={step}
+      onChange={(e) => setText(e.target.value)}
+      onBlur={commit}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") (e.target as HTMLInputElement).blur();
+      }}
+      className="focusable nums w-32 rounded-md border border-paper-border bg-paper-bg px-2 py-1 text-right text-sm font-semibold text-paper-ink dark:border-night-border dark:bg-night-bg dark:text-night-ink"
+    />
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// LabeledSlider — range with a live, formatted readout (optionally type-to-edit)
 // ─────────────────────────────────────────────────────────────────────────────
 export function LabeledSlider({
   label,
@@ -155,6 +203,7 @@ export function LabeledSlider({
   format,
   info,
   infoTitle,
+  editable,
 }: {
   label: string;
   min: number;
@@ -165,6 +214,7 @@ export function LabeledSlider({
   format: (v: number) => ReactNode;
   info?: ReactNode;
   infoTitle?: string;
+  editable?: boolean;
 }) {
   const id = useId();
   return (
@@ -175,9 +225,20 @@ export function LabeledSlider({
         infoTitle={infoTitle}
         htmlFor={id}
         trailing={
-          <span className="nums font-display text-base font-semibold text-paper-ink dark:text-night-ink">
-            {format(value)}
-          </span>
+          editable ? (
+            <NumberField
+              value={value}
+              min={min}
+              max={max}
+              step={step}
+              onCommit={onChange}
+              ariaLabel={label}
+            />
+          ) : (
+            <span className="nums font-display text-base font-semibold text-paper-ink dark:text-night-ink">
+              {format(value)}
+            </span>
+          )
         }
       />
       <input
@@ -192,6 +253,11 @@ export function LabeledSlider({
         // visible track thin while the clickable/grabbable region fills 44px.
         className="focusable h-11 w-full cursor-pointer appearance-none rounded-full bg-paper-border bg-clip-content py-[18px] accent-paper-accent dark:bg-night-border dark:accent-night-accent"
       />
+      {editable && (
+        <div className="nums mt-0.5 text-right text-[12px] text-paper-muted dark:text-night-muted">
+          {format(value)}
+        </div>
+      )}
     </div>
   );
 }
