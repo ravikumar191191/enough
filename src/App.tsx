@@ -9,7 +9,7 @@ import { InputSummary } from "./components/InputSummary";
 import { RankedTable } from "./components/RankedTable";
 import { useTheme } from "./hooks/useTheme";
 import { useUrlState } from "./hooks/useUrlState";
-import { rankCities } from "./lib/model";
+import { rankCities, totalRangeUsd } from "./lib/model";
 import { usdFull } from "./lib/format";
 
 export default function App() {
@@ -38,6 +38,9 @@ export default function App() {
     return list.map((r, i) => ({ ...r, isLowest: i === 0 }));
   }, [ranked, inputs.filter]);
   const lowest = visible[0];
+
+  // Sensitivity band on the lowest total (costs ±15%).
+  const lowestRange = useMemo(() => totalRangeUsd(lowest.city, inputs), [lowest, inputs]);
 
   // The "where are you now?" baseline for the stay-or-go delta (from the full set,
   // so it's available even when filtered out).
@@ -71,7 +74,7 @@ export default function App() {
         scenario={scenario}
       />
 
-      <Headline lowest={lowest} />
+      <Headline lowest={lowest} range={lowestRange} />
 
       <InputSummary inputs={inputs} lowest={lowest} baseline={baseline} />
 

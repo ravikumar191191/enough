@@ -183,6 +183,14 @@ export const REAL_RETURN_DEFAULT = 7.0; // %, real (spec §4)
 export const REAL_RETURN_MIN = 4.0;
 export const REAL_RETURN_MAX = 10.0;
 
+/**
+ * Sensitivity band: our cost estimates (home prices, local living costs) are
+ * asking/midpoint figures. We show a ±% range on the total so a single number
+ * doesn't over-claim precision. Asking prices skew high, so reality often lands in
+ * the lower half of the band.
+ */
+export const SENSITIVITY_PCT = 15;
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Cities — the unified set. India + US live in ONE list (spec §3).
 // ─────────────────────────────────────────────────────────────────────────────

@@ -67,8 +67,7 @@ From the persona evaluation ([docs/evaluations](docs/evaluations/2026-05-30-v0.7
 
 ## From the usability study (2026-05-30) — next
 
-- **Sensitivity band** on the total (±15% prices / FX) — P1 trust ("precision without
-  error bars reads as naïve").
+- ~~**Sensitivity band** on the total~~ — ✅ shipped in v0.12 (headline range, ±15% costs).
 - **Filter discoverability** — make India/US/Both more prominent or infer intent (P3).
 - **Peak-end polish** — celebrate "already funded"; reframe "out of reach" as *"here's
   what closes the gap"* (P3 / all).
