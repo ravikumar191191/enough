@@ -1,4 +1,4 @@
-# Enough — Product & Customer Experience
+# FIREnough — Product & Customer Experience
 
 *A 3-page product brief. What we're building, for whom, the problems we solve, the one
 use case we must nail, and what winning looks like. Pairs with
