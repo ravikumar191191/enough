@@ -1,4 +1,4 @@
-# Enough — Build Spec
+# FIREnough — Build Spec
 
 *The authoritative 6-page engineering specification. Detailed enough to build, ship,
 test, and evaluate to first production usage. Pairs with [PRODUCT.md](./PRODUCT.md) (the

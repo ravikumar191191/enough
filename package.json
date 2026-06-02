@@ -1,7 +1,7 @@
 {
   "name": "firenough",
   "private": true,
-  "version": "0.14.1",
+  "version": "0.14.2",
   "type": "module",
   "description": "FIREnough — find your freedom number: India and US cities ranked by how much you need so you never have to work for money again.",
   "license": "Apache-2.0",
